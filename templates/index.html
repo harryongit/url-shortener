@@ -1,0 +1,86 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 40px auto;">
+    <h2 style="margin-bottom: 20px; text-align: center;">Shorten Your URL</h2>
+    <div style="margin-bottom: 20px;">
+        <input type="url" id="urlInput" placeholder="Enter your URL here" class="input-field">
+        <button onclick="shortenURL()" class="btn" style="width: 100%;">Shorten URL</button>
+    </div>
+    <div id="result" style="display: none;">
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="shortUrl" readonly class="input-field" style="flex: 1;">
+            <button onclick="copyToClipboard()" class="btn" style="background: #6c757d;">Copy</button>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2 style="margin-bottom: 20px;">Recent URLs</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Original URL</th>
+                <th>Short Code</th>
+                <th>Clicks</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for url in urls %}
+            <tr>
+                <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    {{ url.original_url }}
+                </td>
+                <td>
+                    <a href="/{{ url.short_code }}" target="_blank" style="color: #007bff; text-decoration: none;">
+                        {{ url.short_code }}
+                    </a>
+                </td>
+                <td>{{ url.clicks }}</td>
+                <td>{{ url.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function shortenURL() {
+        const urlInput = document.getElementById('urlInput');
+        const resultDiv = document.getElementById('result');
+        const shortUrlInput = document.getElementById('shortUrl');
+
+        try {
+            const response = await fetch('/api/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: urlInput.value }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                const shortUrl = `${window.location.origin}/${data.short_code}`;
+                shortUrlInput.value = shortUrl;
+                resultDiv.style.display = 'block';
+            } else {
+                alert(data.error || 'An error occurred');
+            }
+        } catch (error) {
+            alert('An error occurred while shortening the URL');
+        }
+    }
+
+    function copyToClipboard() {
+        const shortUrlInput = document.getElementById('shortUrl');
+        shortUrlInput.select();
+        document.execCommand('copy');
+        alert('Copied to clipboard!');
+    }
+</script>
+{% endblock %}
