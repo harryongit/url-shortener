@@ -172,6 +172,8 @@ Please ensure your code follows the project’s existing style and passes all li
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
 
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)  
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 ---
 
 ## Acknowledgements
