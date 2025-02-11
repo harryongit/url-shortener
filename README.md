@@ -8,6 +8,7 @@ The application is designed to be easily extendable and offers a clean user inte
 
 ![d0761df0-9d81-40c2-b009-2d2b7b7a9885](https://github.com/user-attachments/assets/c0e1d7bb-51b8-445b-878f-0375b30fa170)
 
+
 ## Key Features
 
 - **Shorten URLs**: Easily convert long URLs into short, shareable links.
